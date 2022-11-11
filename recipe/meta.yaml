@@ -15,7 +15,7 @@ build:
   entry_points:
     - sknetwork=sknetwork.cli:main
   script: {{ PYTHON }} -m pip install . -vv
-  number: 1
+  number: 2
   skip: true  # [py<38]
 
 requirements:
