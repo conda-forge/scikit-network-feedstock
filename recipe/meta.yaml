@@ -5,8 +5,11 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/s/scikit-network/scikit-network-{{ version }}.tar.gz
-  sha256: cb6c7dd92f9071ded19d82f75ee09b9176ccf3e5909af5ea2f8a56700c8a728b
+  url: https://github.com/sknetwork-team/scikit-network/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: dfb597e0f9c8eefbbc6c4dfc5cdd7ece94926fcc9a166308a2461d76b63375b8
+  # TODO: get .pxd into upstream sdist
+  # url: https://pypi.io/packages/source/s/scikit-network/scikit-network-{{ version }}.tar.gz
+  # sha256: 
 
 build:
   script: {{ PYTHON }} -m pip install . -vv
