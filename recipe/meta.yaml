@@ -11,7 +11,7 @@ source:
 build:
   script: {{ PYTHON }} -m pip install . -vv
   number: 0
-  skip: true  # [py<38]
+  skip: true  # [py<38 or np < 122]
 
 requirements:
   build:
@@ -28,11 +28,11 @@ requirements:
     - cython
     - pip
     - python
-    - numpy >=1.22.0
+    - numpy
   run:
     - {{ pin_compatible('numpy') }}
     - python
-    - scipy >=1.7.3
+    - scipy
 
 test:
   source_files:
