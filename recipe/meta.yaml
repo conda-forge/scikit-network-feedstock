@@ -5,15 +5,10 @@ package:
   version: {{ version }}
 
 source:
-  url: https://github.com/sknetwork-team/scikit-network/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: dfb597e0f9c8eefbbc6c4dfc5cdd7ece94926fcc9a166308a2461d76b63375b8
-  # TODO: get .pyx into upstream sdist
-  # url: https://pypi.io/packages/source/s/scikit-network/scikit-network-{{ version }}.tar.gz
-  # sha256: 5fc7d624492af8f3b74681baaacad3bf231d7359480acfceeef7aee7733fd6c0
+  url: https://pypi.io/packages/source/s/scikit-network/scikit-network-{{ version }}.tar.gz
+  sha256: cb6c7dd92f9071ded19d82f75ee09b9176ccf3e5909af5ea2f8a56700c8a728b
 
 build:
-  entry_points:
-    - sknetwork=sknetwork.cli:main
   script: {{ PYTHON }} -m pip install . -vv
   number: 0
   skip: true  # [py<38]
@@ -33,7 +28,7 @@ requirements:
     - cython
     - pip
     - python
-    - numpy
+    - numpy >=1.22.0
   run:
     - {{ pin_compatible('numpy') }}
     - python
