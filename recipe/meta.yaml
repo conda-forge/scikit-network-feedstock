@@ -1,4 +1,4 @@
-{% set version = "0.28.0" %}
+{% set version = "0.28.1" %}
 
 package:
   name: scikit-network
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://github.com/sknetwork-team/scikit-network/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: dfb597e0f9c8eefbbc6c4dfc5cdd7ece94926fcc9a166308a2461d76b63375b8
+  sha256: 6119b8d1a48b172a6a7de243e2532be2df87bd2bd5650d7e3612111ca6106fbe
   # TODO: get .pxd into upstream sdist
   # url: https://pypi.io/packages/source/s/scikit-network/scikit-network-{{ version }}.tar.gz
   # sha256: 
