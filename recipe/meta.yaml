@@ -1,4 +1,4 @@
-{% set version = "0.28.2" %}
+{% set version = "0.28.3" %}
 
 package:
   name: scikit-network
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/s/scikit-network/scikit-network-{{ version }}.tar.gz
-  sha256: ee890e7ece4534692699639a807d37a56bbf49fc3bec31d34bd3ed594ee951d4
+  sha256: 3debaa2799d88babebca6885ebcf55dfc5bcdb1fd87e70aaeebcc44ac08b3783
 
 build:
   script: {{ PYTHON }} -m pip install . -vv
