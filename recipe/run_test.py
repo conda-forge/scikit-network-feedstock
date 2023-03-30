@@ -1,11 +1,27 @@
 import os, pathlib, subprocess, sys
 
 SRC_DIR = pathlib.Path(os.environ["SRC_DIR"])
-TEST_DIRS = (SRC_DIR / "sknetwork").glob("*/tests")
-PYTEST_ARGS = ["pytest", "-vv", "-k", "not gnn_classifier_early_stopping"]
+SKN = SRC_DIR / "sknetwork"
+TEST_DIRS = SKN.glob("*/tests")
+
+PYTEST_ARGS = ["pytest", "-vv"]
+
+SKIPS = [
+    # ???
+    "gnn_classifier_early_stopping",
+    # 0.20.0 https://github.com/conda-forge/scikit-network-feedstock/pull/13
+    "gnn_classifier_reinit",
+]
+
+# pytest handles parenthesis weirdly
+if len(SKIPS) == 1:
+    PYTEST_ARGS += ["-k", f"not {SKIPS[0]}"]
+elif len(SKIPS) > 1:
+    PYTEST_ARGS += ["-k", f"not ({' or '.join(SKIPS[0])})"]
 
 failed = []
 
+# need to run multiple times because of relative imports of `test.*`
 for test_dir in TEST_DIRS:
     if subprocess.call(PYTEST_ARGS, cwd=str(test_dir)):
         failed += [test_dir.parent.name]
