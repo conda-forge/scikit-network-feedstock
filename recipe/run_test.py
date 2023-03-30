@@ -17,12 +17,15 @@ SKIPS = [
 if len(SKIPS) == 1:
     PYTEST_ARGS += ["-k", f"not {SKIPS[0]}"]
 elif len(SKIPS) > 1:
-    PYTEST_ARGS += ["-k", f"not ({' or '.join(SKIPS[0])})"]
+    PYTEST_ARGS += ["-k", f"not ({ ' or '.join(SKIPS) })"]
 
 failed = []
 
+
 # need to run multiple times because of relative imports of `test.*`
 for test_dir in TEST_DIRS:
+    print("in", test_dir.name)
+    print(">>>", *PYTEST_ARGS)
     if subprocess.call(PYTEST_ARGS, cwd=str(test_dir)):
         failed += [test_dir.parent.name]
 
