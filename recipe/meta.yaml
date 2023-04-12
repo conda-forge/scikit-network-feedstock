@@ -1,4 +1,4 @@
-{% set version = "0.29.0" %}
+{% set version = "0.30.0" %}
 
 package:
   name: scikit-network
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/s/scikit-network/scikit-network-{{ version }}.tar.gz
-  sha256: 174e9711470962fc021b486a07e7ce179df6f0716cbe7d34890fbc5335473abb
+  sha256: ab367fa4e7d36ca02d547a69b054299c817c87e8e0ebfd5fed2d558d36bb9c36
 
 build:
   script: {{ PYTHON }} -m pip install . -vv
@@ -30,7 +30,7 @@ requirements:
     - python
     - numpy
   run:
-    - {{ pin_compatible('numpy', lower_bound='1.22') }}
+    - {{ pin_compatible('numpy', lower_bound='1.22.4') }}
     - python
     - scipy
 
