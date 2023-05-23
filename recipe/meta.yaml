@@ -1,4 +1,4 @@
-{% set version = "0.30.0" %}
+{% set version = "0.31.0" %}
 
 package:
   name: scikit-network
@@ -6,10 +6,10 @@ package:
 
 source:
   url: https://pypi.io/packages/source/s/scikit-network/scikit-network-{{ version }}.tar.gz
-  sha256: ab367fa4e7d36ca02d547a69b054299c817c87e8e0ebfd5fed2d558d36bb9c36
+  sha256: b26d6704ff1f8367eae7c2061b3731c33d5a25c479f9d27e11481f3c2887609e
 
 build:
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . -vv --no-build-isolation
   number: 0
   skip: true  # [py<38]
 
@@ -19,6 +19,7 @@ requirements:
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - cython                                 # [build_platform != target_platform]
     - numpy                                  # [build_platform != target_platform]
+    - pytest-runner                          # [build_platform != target_platform]
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
     - llvm-openmp   # [osx]
@@ -26,13 +27,14 @@ requirements:
     - intel-openmp  # [win]
   host:
     - cython
-    - pip
-    - python
     - numpy
+    - pip
+    - pytest-runner
+    - python
   run:
     - {{ pin_compatible('numpy', lower_bound='1.22.4') }}
     - python
-    - scipy
+    - scipy >=1.7.3
 
 test:
   source_files:
