@@ -10,7 +10,7 @@ source:
 
 build:
   script: {{ PYTHON }} -m pip install . -vv --no-build-isolation
-  number: 1
+  number: 2
   skip: true  # [py<38]
 
 requirements:
@@ -39,13 +39,15 @@ requirements:
 test:
   source_files:
     - sknetwork/*/tests
+    - sknetwork/test_*.py
   imports:
     - sknetwork
   commands:
     - pip check
   requires:
+    - coverage
     - pip
-    - pytest-cov
+    - pytest
 
 about:
   home: https://github.com/sknetwork-team/scikit-network
