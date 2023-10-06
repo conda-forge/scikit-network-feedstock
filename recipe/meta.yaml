@@ -39,13 +39,15 @@ requirements:
 test:
   source_files:
     - sknetwork/*/tests
+    - sknetwork/test_*.py
   imports:
     - sknetwork
   commands:
     - pip check
   requires:
+    - coverage
     - pip
-    - pytest-cov
+    - pytest
 
 about:
   home: https://github.com/sknetwork-team/scikit-network
