@@ -17,6 +17,8 @@ SKIPS = [
     "gnn_classifier_early_stopping",
     # 0.20.0 https://github.com/conda-forge/scikit-network-feedstock/pull/13
     "gnn_classifier_reinit",
+    # https://github.com/conda-forge/scikit-network-feedstock/pull/19
+    "test_edge_list"
 ]
 
 SRC_DIR = pathlib.Path(os.environ["SRC_DIR"])
