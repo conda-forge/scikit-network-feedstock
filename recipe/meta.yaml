@@ -8,7 +8,7 @@ source:
   # TODO: upstream issue
   # url: https://pypi.io/packages/source/s/scikit-network/scikit-network-{{ version }}.tar.gz
   url: https://github.com/sknetwork-team/scikit-network/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: b26d6704ff1f8367eae7c2061b3731c33d5a25c479f9d27e11481f3c2887609e
+  sha256: 79566598a430e971ca4e0318d5dcc9c282fae5fefee35f70167417cfdd1370e0
 
 build:
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
