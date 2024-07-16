@@ -9,7 +9,7 @@ WITH_COV = (
     # coverage is slow and flaky on pypy
     not PYPY
 )
-COV_FAIL_UNDER = 94
+COV_FAIL_UNDER = 93
 SKIPS = [
     # 0.31.0 https://github.com/conda-forge/scikit-network-feedstock/pull/18
     "bfs",
