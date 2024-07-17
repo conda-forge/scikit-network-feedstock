@@ -21,7 +21,15 @@ SKIPS = [
 ]
 
 
-PYTEST_ARGS = ["pytest", "-vv", "--color=yes", "--no-header", "--pyargs", "sknetwork"]
+PYTEST_ARGS = [
+    "pytest",
+    "--pyargs",
+    "sknetwork",
+    "-vv",
+    "--color=yes",
+    "--no-header",
+    "--tb=long",
+]
 
 if WITH_COV:
     PYTEST_ARGS = [
