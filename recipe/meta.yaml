@@ -5,10 +5,8 @@ package:
   version: {{ version }}
 
 source:
-  # TODO: upstream issue
-  # url: https://pypi.io/packages/source/s/scikit-network/scikit-network-{{ version }}.tar.gz
-  url: https://github.com/sknetwork-team/scikit-network/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 046f76a5e5d27ec0125f3f36943efa352b78ae7cd7d9a9e632dec906127f7fdb
+  url: https://pypi.io/packages/source/s/scikit-network/scikit-network-{{ version }}.tar.gz
+  sha256: f7f7cc02eb4267b16a9383f64626152e59ba435d6d77b1a35665b6fc1bcf572d
 
 build:
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
@@ -39,17 +37,13 @@ requirements:
     - scipy >=1.7.3
 
 test:
-  source_files:
-    - sknetwork/*/tests
-    - sknetwork/test_*.py
   imports:
     - sknetwork
   commands:
     - pip check
   requires:
-    - coverage
     - pip
-    - pytest
+    - pytest-cov
 
 about:
   home: https://github.com/sknetwork-team/scikit-network
@@ -64,7 +58,6 @@ about:
     - Memory-efficient representation of graphs as sparse matrices in scipy format
     - Fast algorithms
     - Simple API inspired by scikit-learn
-
 
 extra:
   recipe-maintainers:
