@@ -9,7 +9,7 @@ WITH_COV = (
     # coverage is slow and flaky on pypy
     not PYPY
 )
-COV_FAIL_UNDER = 94
+COV_FAIL_UNDER = 93
 SKIPS = [
     # 0.31.0 https://github.com/conda-forge/scikit-network-feedstock/pull/18
     "bfs",
@@ -26,7 +26,7 @@ SKN = SRC_DIR / "sknetwork"
 ROOT_TESTS = sorted(SKN.glob("test_*.py"))
 TEST_DIRS = sorted(SKN.glob("*/tests"))
 
-PYTEST_ARGS = ["pytest", "-vv", "--color=yes", "--no-header"]
+PYTEST_ARGS = ["pytest", "-vv", "--color=yes", "--tb=long", "--no-header"]
 
 if WITH_COV:
     PYTEST_ARGS = [

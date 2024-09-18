@@ -50,6 +50,7 @@ test:
     - pip check
   requires:
     - coverage
+    - note
     - pip
     - pytest
 
