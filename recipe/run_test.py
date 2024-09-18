@@ -1,9 +1,9 @@
-import os, pathlib, subprocess, sys
+import os, pathlib, subprocess, sys, platform
 from pathlib import Path
 
 # platform detection
 PYPY = "__pypy__" in sys.builtin_module_names
-WIN = os.name == "nt"
+WIN = platform.system() == "Windows"
 
 # hopefully only these need to be changed per-PR
 WITH_COV = all(
@@ -27,11 +27,12 @@ SKIPS = [
 ]
 
 
-TEST_DIR_SKIPS = (
-    []
-    if not WIN
-    else [
+TEST_DIR_SKIPS = []
+
+if WIN:
+    TEST_DIR_SKIPS = [
         # https://github.com/conda-forge/scikit-network-feedstock/pull/23
+        #
         # lots of
         #
         #   TypeError: No matching signature found
@@ -42,7 +43,6 @@ TEST_DIR_SKIPS = (
         "hierarchy",
         "visualization",
     ]
-)
 
 SRC_DIR = pathlib.Path(os.environ["SRC_DIR"])
 SKN = SRC_DIR / "sknetwork"
