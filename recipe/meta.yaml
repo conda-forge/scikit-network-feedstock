@@ -1,4 +1,4 @@
-{% set version = "0.32.1" %}
+{% set version = "0.33.1" %}
 
 package:
   name: scikit-network
@@ -8,7 +8,7 @@ source:
   # TODO: upstream issue
   # url: https://pypi.io/packages/source/s/scikit-network/scikit-network-{{ version }}.tar.gz
   url: https://github.com/sknetwork-team/scikit-network/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 79566598a430e971ca4e0318d5dcc9c282fae5fefee35f70167417cfdd1370e0
+  sha256: c7da9be8e59e9290772854ae92aa66c45619970bc1c366d9160770477a12aa21
 
 build:
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
