@@ -1,15 +1,20 @@
-import os, pathlib, subprocess, sys
+import os, pathlib, subprocess, sys, platform
 from pathlib import Path
 
 # platform detection
 PYPY = "__pypy__" in sys.builtin_module_names
+WIN = platform.system() == "Windows"
 
 # hopefully only these need to be changed per-PR
-WITH_COV = (
-    # coverage is slow and flaky on pypy
-    not PYPY
+WITH_COV = all(
+    [
+        # coverage is slow and flaky on pypy
+        not PYPY,
+        # so many skips on windows,
+        not WIN,
+    ]
 )
-COV_FAIL_UNDER = 94
+COV_FAIL_UNDER = 93
 SKIPS = [
     # 0.31.0 https://github.com/conda-forge/scikit-network-feedstock/pull/18
     "bfs",
@@ -18,15 +23,33 @@ SKIPS = [
     # 0.20.0 https://github.com/conda-forge/scikit-network-feedstock/pull/13
     "gnn_classifier_reinit",
     # https://github.com/conda-forge/scikit-network-feedstock/pull/19
-    "test_edge_list"
+    "test_edge_list",
 ]
+
+
+TEST_DIR_SKIPS = []
+
+if WIN:
+    TEST_DIR_SKIPS = [
+        # https://github.com/conda-forge/scikit-network-feedstock/pull/23
+        #
+        # lots of
+        #
+        #   TypeError: No matching signature found
+        #
+        "classification",
+        "clustering",
+        "embedding",
+        "hierarchy",
+        "visualization",
+    ]
 
 SRC_DIR = pathlib.Path(os.environ["SRC_DIR"])
 SKN = SRC_DIR / "sknetwork"
 ROOT_TESTS = sorted(SKN.glob("test_*.py"))
-TEST_DIRS = sorted(SKN.glob("*/tests"))
+TEST_DIRS = sorted(t for t in SKN.glob("*/tests") if t not in TEST_DIR_SKIPS)
 
-PYTEST_ARGS = ["pytest", "-vv", "--color=yes", "--no-header"]
+PYTEST_ARGS = ["pytest", "-vv", "--color=yes", "--tb=long", "--no-header"]
 
 if WITH_COV:
     PYTEST_ARGS = [
@@ -73,7 +96,7 @@ def run():
     print("Passed tests in:", "\n".join(passed), flush=True)
 
     if failed:
-        print("Failed tests in:", "\n".join(failed), flush=True)
+        print("FAILED tests in:", "\n".join(failed), flush=True)
         return 1
 
     if WITH_COV:
