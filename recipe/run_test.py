@@ -21,7 +21,7 @@ SKIPS = [
     "test_edge_list"
 ]
 
-SRC_DIR = pathlib.Path(os.environ["SRC_DIR"])
+SRC_DIR = pathlib.Path(__file__).parent
 SKN = SRC_DIR / "sknetwork"
 ROOT_TESTS = sorted(SKN.glob("test_*.py"))
 TEST_DIRS = sorted(SKN.glob("*/tests"))

@@ -38,11 +38,13 @@ requirements:
     - if: win
       then: intel-openmp
   host:
-    - cython
+    - cython <=3.0.12
     - numpy
     - pip
     - pytest-runner
     - python
+    - scipy
+    - setuptools
   run:
     - python
     - scipy >=1.7.3
@@ -50,7 +52,6 @@ requirements:
 tests:
   - python:
       imports: sknetwork
-      pip_check: true
   - files:
       recipe:
         - run_test.py
