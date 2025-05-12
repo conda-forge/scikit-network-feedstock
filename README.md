@@ -9,7 +9,7 @@ Package license: BSD-3-Clause
 
 Summary: Graph algorithms
 
-Documentation: https://scikit-network.readthedocs.io
+Documentation: https://scikit-network.readthedocs.io/
 
 Python package for the analysis of large graphs:
 - Memory-efficient representation of graphs as sparse matrices in scipy format
