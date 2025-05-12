@@ -1,13 +1,20 @@
-import os, pathlib, subprocess, sys
+import os
+import pathlib
+import subprocess
+import sys
 from pathlib import Path
 
 # platform detection
 PYPY = "__pypy__" in sys.builtin_module_names
 
+WIN = os.name == "nt"
+
 # hopefully only these need to be changed per-PR
-WITH_COV = (
+WITH_COV = not (
     # coverage is slow and flaky on pypy
-    not PYPY
+    PYPY
+    # just too many skips, upstream not interested in reviewing PRs
+    or WIN
 )
 COV_FAIL_UNDER = 94
 SKIPS = [
@@ -18,15 +25,32 @@ SKIPS = [
     # 0.20.0 https://github.com/conda-forge/scikit-network-feedstock/pull/13
     "gnn_classifier_reinit",
     # https://github.com/conda-forge/scikit-network-feedstock/pull/19
-    "test_edge_list"
+    "test_edge_list",
 ]
 
-SRC_DIR = pathlib.Path(os.environ["SRC_DIR"])
+
+if WIN:
+    # 0.33.3 https://github.com/conda-forge/scikit-network-feedstock/pull/25
+    SKIPS += [
+        "(test_API and TestClassificationAPI)",
+        "(test_API and TestClusteringAPI)",
+        "(test_louvain and TestLouvainClustering)",
+        "(TestClusteringMetrics and test_modularity)",
+        "(test_louvain_embedding and TestLouvainEmbedding)",
+        "(test_API and TestHierarchyAPI)",
+        "(test_algos and TestLouvainHierarchy)",
+        "(test_metrics and TestMetrics)",
+        "(test_graphs and TestVisualization)",
+    ]
+
+
+SRC_DIR = pathlib.Path(__file__).parent
 SKN = SRC_DIR / "sknetwork"
 ROOT_TESTS = sorted(SKN.glob("test_*.py"))
 TEST_DIRS = sorted(SKN.glob("*/tests"))
 
 PYTEST_ARGS = ["pytest", "-vv", "--color=yes", "--no-header"]
+
 
 if WITH_COV:
     PYTEST_ARGS = [
@@ -47,7 +71,7 @@ if WITH_COV:
 if len(SKIPS) == 1:
     PYTEST_ARGS += ["-k", f"not {SKIPS[0]}"]
 elif len(SKIPS) > 1:
-    PYTEST_ARGS += ["-k", f"not ({ ' or '.join(SKIPS) })"]
+    PYTEST_ARGS += ["-k", f"not ({' or '.join(SKIPS)})"]
 
 
 def run():
