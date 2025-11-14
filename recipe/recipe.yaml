@@ -3,6 +3,7 @@ schema_version: 1
 
 context:
   version: "0.33.4"
+  cython_max: "3.0.12"
 
 package:
   name: scikit-network
@@ -16,7 +17,6 @@ source:
 
 build:
   number: 0
-  skip: match(python, "<3.8")
   script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
@@ -27,7 +27,7 @@ requirements:
     - if: build_platform != target_platform
       then:
         - cross-python_${{ target_platform }}
-        - cython <=3.0.12
+        - cython <=${{ cython_max }}
         - numpy
         - pytest-runner
         - python
@@ -40,7 +40,7 @@ requirements:
     - if: win
       then: intel-openmp
   host:
-    - cython <=3.0.12
+    - cython <=${{ cython_max }}
     - numpy
     - pip
     - pytest-runner
@@ -62,8 +62,7 @@ tests:
         - sknetwork/test_*.py
     requirements:
       run:
-        - coverage
-        - pytest
+        - pytest-cov
     script:
       - python run_test.py
 
