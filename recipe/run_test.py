@@ -1,20 +1,18 @@
-import os
+import platform
 import pathlib
 import subprocess
 import sys
 from pathlib import Path
 
 # platform detection
-PYPY = "__pypy__" in sys.builtin_module_names
-
-WIN = os.name == "nt"
+WIN = platform.system() == "Windows"
+LINUX = platform.system() == "Linux"
+X86_64 = platform.processor() == "x86_64"
 
 # hopefully only these need to be changed per-PR
 WITH_COV = not (
-    # coverage is slow and flaky on pypy
-    PYPY
     # just too many skips, upstream not interested in reviewing PRs
-    or WIN
+    WIN
 )
 COV_FAIL_UNDER = 94
 SKIPS = [
@@ -43,6 +41,12 @@ if WIN:
         "(test_graphs and TestVisualization)",
     ]
 
+if LINUX and not X86_64:
+    SKIPS += [
+        # fails heuristic check
+        # https://github.com/conda-forge/scikit-network-feedstock/pull/27
+        "test_directed"
+    ]
 
 SRC_DIR = pathlib.Path(__file__).parent
 SKN = SRC_DIR / "sknetwork"
