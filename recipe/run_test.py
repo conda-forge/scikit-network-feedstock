@@ -10,7 +10,6 @@ PLATFORM = platform.system()
 PROCESSOR = platform.processor()
 WIN = PLATFORM == "Windows"
 LINUX = PLATFORM == "Linux"
-X86_64 = PROCESSOR == "x86_64"
 
 # hopefully only these need to be changed per-PR
 WITH_COV = not (
@@ -44,9 +43,9 @@ if WIN:
         "(test_graphs and TestVisualization)",
     ]
 
-if LINUX and not X86_64:
+if LINUX:
     SKIPS += [
-        # fails heuristic check
+        # fails heuristic check when cross-compiling
         # https://github.com/conda-forge/scikit-network-feedstock/pull/27
         "test_directed"
     ]
