@@ -2,12 +2,15 @@ import platform
 import pathlib
 import subprocess
 import sys
+import os
 from pathlib import Path
 
 # platform detection
-WIN = platform.system() == "Windows"
-LINUX = platform.system() == "Linux"
-X86_64 = platform.processor() == "x86_64"
+PLATFORM = platform.system()
+PROCESSOR = platform.processor()
+WIN = PLATFORM == "Windows"
+LINUX = PLATFORM == "Linux"
+X86_64 = PROCESSOR == "x86_64"
 
 # hopefully only these need to be changed per-PR
 WITH_COV = not (
@@ -53,7 +56,7 @@ SKN = SRC_DIR / "sknetwork"
 ROOT_TESTS = sorted(SKN.glob("test_*.py"))
 TEST_DIRS = sorted(SKN.glob("*/tests"))
 
-PYTEST_ARGS = ["pytest", "-vv", "--color=yes", "--no-header"]
+PYTEST_ARGS = ["pytest", "-vv", "--color=yes"]
 
 
 if WITH_COV:
@@ -79,11 +82,13 @@ elif len(SKIPS) > 1:
 
 
 def run():
+    print("Platform:  ", PLATFORM)
+    print("Processor: ", PROCESSOR)
     failed = []
     # need to run multiple times because of relative imports of `test.*`
     passed = []
 
-    print("    >>>", *PYTEST_ARGS, flush=True)
+    print("    >>>", "\n\t".join(PYTEST_ARGS), flush=True)
 
     print("... in _root", flush=True)
     if subprocess.call([*PYTEST_ARGS, *list(map(str, ROOT_TESTS))], cwd=str(SKN)):
