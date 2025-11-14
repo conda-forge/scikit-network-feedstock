@@ -2,7 +2,8 @@
 schema_version: 1
 
 context:
-  version: 0.33.3
+  version: "0.33.4"
+  cython_max: "3.0.12"
 
 package:
   name: scikit-network
@@ -12,11 +13,10 @@ source:
   # TODO: upstream issue
   # url: https://pypi.io/packages/source/s/scikit-network/scikit-network-{{ version }}.tar.gz
   url: https://github.com/sknetwork-team/scikit-network/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: de16b1cf30cb113f7324e877a044d49f68f06beeda16fc3e448728a0e8783e8e
+  sha256: 95423e7a573d90a39bde4b80e85bfed7faf2936c5774b04bff39b1d73f537d50
 
 build:
-  number: 2
-  skip: match(python, "<3.8")
+  number: 0
   script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
@@ -27,7 +27,7 @@ requirements:
     - if: build_platform != target_platform
       then:
         - cross-python_${{ target_platform }}
-        - cython <=3.0.12
+        - cython <=${{ cython_max }}
         - numpy
         - pytest-runner
         - python
@@ -40,7 +40,7 @@ requirements:
     - if: win
       then: intel-openmp
   host:
-    - cython <=3.0.12
+    - cython <=${{ cython_max }}
     - numpy
     - pip
     - pytest-runner
@@ -62,8 +62,7 @@ tests:
         - sknetwork/test_*.py
     requirements:
       run:
-        - coverage
-        - pytest
+        - pytest-cov
     script:
       - python run_test.py
 

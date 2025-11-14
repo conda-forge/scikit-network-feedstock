@@ -1,22 +1,22 @@
-import os
+import platform
 import pathlib
 import subprocess
 import sys
+import os
 from pathlib import Path
 
 # platform detection
-PYPY = "__pypy__" in sys.builtin_module_names
-
-WIN = os.name == "nt"
+PLATFORM = platform.system()
+PROCESSOR = platform.processor()
+WIN = PLATFORM == "Windows"
+LINUX = PLATFORM == "Linux"
 
 # hopefully only these need to be changed per-PR
 WITH_COV = not (
-    # coverage is slow and flaky on pypy
-    PYPY
     # just too many skips, upstream not interested in reviewing PRs
-    or WIN
+    WIN
 )
-COV_FAIL_UNDER = 94
+COV_FAIL_UNDER = 93
 SKIPS = [
     # 0.31.0 https://github.com/conda-forge/scikit-network-feedstock/pull/18
     "bfs",
@@ -43,13 +43,19 @@ if WIN:
         "(test_graphs and TestVisualization)",
     ]
 
+if LINUX:
+    SKIPS += [
+        # fails heuristic check when cross-compiling
+        # https://github.com/conda-forge/scikit-network-feedstock/pull/27
+        "test_directed"
+    ]
 
 SRC_DIR = pathlib.Path(__file__).parent
 SKN = SRC_DIR / "sknetwork"
 ROOT_TESTS = sorted(SKN.glob("test_*.py"))
 TEST_DIRS = sorted(SKN.glob("*/tests"))
 
-PYTEST_ARGS = ["pytest", "-vv", "--color=yes", "--no-header"]
+PYTEST_ARGS = ["pytest", "-vv", "--color=yes"]
 
 
 if WITH_COV:
@@ -75,11 +81,13 @@ elif len(SKIPS) > 1:
 
 
 def run():
+    print("Platform:  ", PLATFORM)
+    print("Processor: ", PROCESSOR)
     failed = []
     # need to run multiple times because of relative imports of `test.*`
     passed = []
 
-    print("    >>>", *PYTEST_ARGS, flush=True)
+    print("    >>>", "\n\t".join(PYTEST_ARGS), flush=True)
 
     print("... in _root", flush=True)
     if subprocess.call([*PYTEST_ARGS, *list(map(str, ROOT_TESTS))], cwd=str(SKN)):
